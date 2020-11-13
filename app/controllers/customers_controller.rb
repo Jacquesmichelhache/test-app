@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
 
 
   def index
-    resources = Customer.all
+    resources = current_user.customers.all    
 
     render json: {
       status: {code: 200, message: 'Success at retreving customers!'},
