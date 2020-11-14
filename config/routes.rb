@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
+  get 'customers/activityTypes', to: 'customers#activity_types'
+
   resources :customers
+
+ 
+
 
  
 end
