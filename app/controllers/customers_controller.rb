@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
   include ApplicationHelper  
   respond_to :json
   before_action :authenticate_user!
+  
 
 
   def index
@@ -60,18 +61,36 @@ class CustomersController < ApplicationController
 
   end
 
-
+  #DELETE
   def destroy
+
+    id = params[:id]   
+    
+    begin    
+      current_user.customers.find(id).destroy     
+      render json: success("Customer successfully removed",nil)  
+    rescue ActiveRecord::RecordNotFound
+      render json: fail("Customer not found in database")       
+    rescue ActiveRecord::DeleteRestrictionError 
+      #An assumption is made here that the customer has contacts
+      render json: fail("Cannot remove a customer with contacts")      
+    rescue ActiveRecord::RecordNotDestroyed
+      render json: fail("Cannot delete a customer that has contacts!")
+    rescue
+      render json: fail("Unable to delete customer. Contact administrator")     
+    end
 
   end
 
 
   private
-  def customer_params
-    params.require(:customer).permit(:name, :relationshipstart, :addresscity,
-      :addresspostalcode, :addressstreet, :addressapt, :activitytype,
-    :infoemail)
-  end  
+    def customer_params
+      params.require(:customer).permit(:name, :relationshipstart, :addresscity,
+        :addresspostalcode, :addressstreet, :addressapt, :activitytype,
+      :infoemail)
+    end  
+
+ 
 
 
 end

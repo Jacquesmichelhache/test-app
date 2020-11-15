@@ -1,4 +1,4 @@
 class CustomerSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :name, :relationshipstart, :addresscity, :infoemail
+  attributes :name, :relationshipstart, :activitytype, :infoemail, :id
 end
