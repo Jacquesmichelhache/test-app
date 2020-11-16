@@ -52,13 +52,41 @@ class CustomersController < ApplicationController
   end
 
   #GET
-  def edit
+  def show    
+
+    begin
+    
+      resource = current_user.customers.find(params[:id])  
+
+      customerJson = CustomerSerializer.new(resource).serializable_hash
+    
+      render json: success("successfully retrieved customer information", customerJson)
+
+    rescue Exception => e
+       render json: fail("Error retrieving customer information",e.message) 
+    end
        
   end
 
 
-  def update
+  def update     
 
+    if current_user != nil then
+      customer_info = customer_params
+      customer = current_user.customers.find(params[:id]);
+
+      if customer != nil then
+        if customer.update(customer_info) then
+          render json: success("Successfully updated customer", customer)            
+        else
+          render json: fail("Unable to save changes", customer.errors )       
+        end
+      else
+
+      end      
+    else
+      render json: fail("Fatal internal error: current_user is nil")        
+    end
   end
 
   #DELETE
