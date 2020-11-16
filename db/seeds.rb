@@ -42,9 +42,9 @@ customers.each{ |customer|
 }
 
 
-10.times do
+50.times do |x|
   
-  user.customers.create!(name: "customer with no contacts",
+  user.customers.create!(name: "customer with no contacts - " + x.to_s,
     relationshipstart: Time.zone.now,
     addresscity: "addresscity",
     addresspostalcode: "E1A7S8",
