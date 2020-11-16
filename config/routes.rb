@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'customers/activityTypes', to: 'customers#activity_types' 
 
   resources :customers
+  resources :contacts
 
  
 

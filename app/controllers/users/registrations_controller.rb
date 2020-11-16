@@ -2,14 +2,25 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   respond_to :json
-
+  include ApplicationHelper  
 
   private
     def respond_with(resource, _opts = {})
-      render json: {
-      status: {code: 200, message: 'Logged in successfully.'},
-      data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      }
+     
+
+      if resource.id == nil then
+        puts resource.email
+        if User.find_by(email: resource.email) != nil then
+          render json: fail("Email already exist")  
+        else
+          render json: fail("Unknown server error")  
+        end
+         
+      else
+        user = UserSerializer.new(resource).serializable_hash[:data][:attributes]
+        render json: success("Logged in successfully.",user)         
+      end
+      
     end
 
 
